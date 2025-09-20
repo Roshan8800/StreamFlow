@@ -18,4 +18,8 @@
       "database_id": "0199650a-03ab-7a93-ae4e-10a0cd64bbef",
     },
   ],
+  "vars": {
+    "MOCHA_USERS_SERVICE_API_URL": "https://users.mocha.dev",
+    "MOCHA_USERS_SERVICE_API_KEY": "placeholder"
+  }
 }
