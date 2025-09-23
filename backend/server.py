@@ -28,6 +28,10 @@ api_router = APIRouter(prefix="/api")
 
 # Security
 security = HTTPBearer()
+# Add your routes to the router instead of directly to app
+@api_router.get("/")
+async def root():
+    return {"message": "PlayNite API is running!", "version": "1.0.0"}
 
 # Pydantic Models
 class User(BaseModel):
