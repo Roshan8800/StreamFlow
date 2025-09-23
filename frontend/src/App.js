@@ -79,6 +79,11 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/video/:id" element={<VideoPlayer />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/playlists" element={<Playlists />} />
+                    <Route path="/watchlist" element={<Watchlist />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/notifications" element={<Notifications />} />
+                    <Route path="/settings" element={<Settings />} />
                     
                     {/* Admin Routes */}
                     {user.role === 'admin' && (
@@ -87,6 +92,7 @@ function App() {
                         <Route path="/admin/users" element={<UserManagement />} />
                         <Route path="/admin/videos" element={<VideoManagement />} />
                         <Route path="/admin/analytics" element={<Analytics />} />
+                        <Route path="/admin/files" element={<FileManager />} />
                       </>
                     )}
                     
