@@ -1,54 +1,106 @@
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+// Components
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import Home from "./pages/Home";
+import VideoPlayer from "./pages/VideoPlayer";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import UserManagement from "./pages/UserManagement";
+import VideoManagement from "./pages/VideoManagement";
+import Analytics from "./pages/Analytics";
+import { Toaster } from "./components/ui/sonner";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
-  return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+// Context
+const AppContext = React.createContext();
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Mock authentication check
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('playNiteToken');
+      const userData = localStorage.getItem('playNiteUser');
+      
+      if (token && userData) {
+        setUser(JSON.parse(userData));
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  const login = (userData, token) => {
+    setUser(userData);
+    localStorage.setItem('playNiteToken', token);
+    localStorage.setItem('playNiteUser', JSON.stringify(userData));
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('playNiteToken');
+    localStorage.removeItem('playNiteUser');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <div className="loading-text">PlayNite</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <AppContext.Provider value={{ user, login, logout, sidebarOpen, setSidebarOpen }}>
+      <div className="App">
+        <BrowserRouter>
+          {user ? (
+            <div className="app-layout">
+              <Header />
+              <div className="main-content">
+                <Sidebar />
+                <div className={`content-area ${sidebarOpen ? 'sidebar-open' : ''}`}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/video/:id" element={<VideoPlayer />} />
+                    <Route path="/profile" element={<Profile />} />
+                    
+                    {/* Admin Routes */}
+                    {user.role === 'admin' && (
+                      <>
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/admin/users" element={<UserManagement />} />
+                        <Route path="/admin/videos" element={<VideoManagement />} />
+                        <Route path="/admin/analytics" element={<Analytics />} />
+                      </>
+                    )}
+                    
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          )}
+        </BrowserRouter>
+        <Toaster />
+      </div>
+    </AppContext.Provider>
   );
 }
 
+export { AppContext };
 export default App;
