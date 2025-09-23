@@ -13,6 +13,12 @@ import AdminDashboard from "./pages/AdminDashboard";
 import UserManagement from "./pages/UserManagement";
 import VideoManagement from "./pages/VideoManagement";
 import Analytics from "./pages/Analytics";
+import Playlists from "./pages/Playlists";
+import Watchlist from "./pages/Watchlist";
+import FileManager from "./pages/FileManager";
+import Settings from "./pages/Settings";
+import Community from "./pages/Community";
+import Notifications from "./pages/Notifications";
 import { Toaster } from "./components/ui/sonner";
 
 // Context
