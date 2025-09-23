@@ -27,10 +27,12 @@ const Sidebar = () => {
 
   const userMenuItems = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: Play, label: 'Videos', path: '/videos' },
-    { icon: Heart, label: 'Favorites', path: '/favorites' },
-    { icon: History, label: 'Watch History', path: '/history' },
+    { icon: List, label: 'Playlists', path: '/playlists' },
+    { icon: Clock, label: 'Watchlist', path: '/watchlist' },
+    { icon: MessageSquare, label: 'Community', path: '/community' },
+    { icon: Bell, label: 'Notifications', path: '/notifications' },
     { icon: User, label: 'Profile', path: '/profile' },
+    { icon: Settings, label: 'Settings', path: '/settings' },
   ];
 
   const adminMenuItems = [
@@ -38,7 +40,7 @@ const Sidebar = () => {
     { icon: Users, label: 'Users', path: '/admin/users' },
     { icon: Video, label: 'Videos', path: '/admin/videos' },
     { icon: BarChart3, label: 'Analytics', path: '/admin/analytics' },
-    { icon: Settings, label: 'Settings', path: '/admin/settings' },
+    { icon: FileText, label: 'Files', path: '/admin/files' },
   ];
 
   const menuItems = user?.role === 'admin' ? [...userMenuItems, ...adminMenuItems] : userMenuItems;
