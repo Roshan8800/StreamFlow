@@ -13,7 +13,12 @@ import {
   Video,
   BarChart3,
   Menu,
-  X
+  X,
+  List,
+  Clock,
+  MessageSquare,
+  Bell,
+  FileText
 } from 'lucide-react';
 
 const Sidebar = () => {
